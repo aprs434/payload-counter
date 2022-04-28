@@ -2,7 +2,7 @@
 
 > ⚠ NOT FUNCTIONAL YET; CURRENTLY UNDER DEVELOPMENT
 
-This LoRa payload counter is based on [micropython](https://micropython.org/) and the [u‑lora](https://github.com/martynwheeler/u-lora) library by Martyn Wheeler. It is intended to work with the ESP32, ESP8266 and Raspberry Pi Pico microcontrollers.
+This LoRa payload counter is based on [Micropython](https://micropython.org/) and the [u‑lora](https://github.com/martynwheeler/u-lora) library by Martyn Wheeler. It is intended to work with ESP32, ESP8266 and Raspberry Pi Pico microcontrollers.
 
 Payload counts are those as being reported by the LoRa chip.
 
@@ -12,9 +12,8 @@ Payload counts are those as being reported by the LoRa chip.
 $ pip install esptool rshell
 ```
 
-
-## Installing MicroPython for ESP32
-Please, [follow these instructions](https://micropython.org/download/esp32/).
+## Installing Micropython
+- For ESP32, please, [follow these instructions](https://micropython.org/download/esp32/).
 
 
 ## Using `pyboard.py`
