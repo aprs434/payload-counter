@@ -39,5 +39,5 @@ repl
 
 1. After typing `repl` followed by a <kbd>Return</kbd>, hit <kbd>Ctrl</kbd>+<kbd>D</kbd> to soft reboot the device.
 2. You can now monitor the output of the `main.py` script running on the device.
-3. Hit <kbd>Ctrl</kbd>+<kbd>X</kbd> to leave the REPL and to return to `rshell`.
-4. Hit <kbd>Ctrl</kbd>+<kbd>X</kbd> to leave `rshell` and to return to the command line.
+3. Hit once or twice <kbd>Ctrl</kbd>+<kbd>X</kbd> to leave the REPL and to return to `rshell`.
+4. Hit <kbd>Ctrl</kbd>+<kbd>D</kbd> again to leave `rshell` and to return to the command line.
