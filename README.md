@@ -31,7 +31,7 @@ $ pyboard.py --device /dev/ttyUSB2 -f cp main.py ulora.py :
 
 
 ## Using `rshell` to Access the MicroPython REPL
-A device running MicroPython has a shell environment, called the read–eval–print loop (REPL).
+A device running MicroPython has a shell environment, called [the read–eval–print loop (REPL)](https://en.wikipedia.org/wiki/Read–eval–print_loop).
 It can be accessed by running the `rshell` tool.
 ```bash
 $ rshell -p /dev/ttyUSB2 -b 115200
