@@ -2,7 +2,7 @@
 
 > ⚠ NOT FUNCTIONAL YET; CURRENTLY UNDER DEVELOPMENT
 
-This LoRa payload counter is based off [micropython](https://micropython.org/) and the [u‑lora](https://github.com/martynwheeler/u-lora) library by Martyn Wheeler. It is intended to work with the ESP32, ESP8266 and Raspberry Pi Pico microcontrollers.
+This LoRa payload counter is based on [micropython](https://micropython.org/) and the [u‑lora](https://github.com/martynwheeler/u-lora) library by Martyn Wheeler. It is intended to work with the ESP32, ESP8266 and Raspberry Pi Pico microcontrollers.
 
 Payload counts are those as being reported by the LoRa chip.
 
