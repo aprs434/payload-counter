@@ -54,37 +54,39 @@ FXOSC = 32000000.0
 FSTEP = (FXOSC / 524288)
 
 class ModemConfig():
-    Bw125Cr45Sf128 = (0x72, 0x74, 0x04) #< Bw = 125 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on. Default medium range
-    Bw500Cr45Sf128 = (0x92, 0x74, 0x04) #< Bw = 500 kHz, Cr = 4/5, Sf = 128chips/symbol, CRC on. Fast+short range
-    Bw31_25Cr48Sf512 = (0x48, 0x94, 0x04) #< Bw = 31.25 kHz, Cr = 4/8, Sf = 512chips/symbol, CRC on. Slow+long range
-    Bw125Cr48Sf4096 = (0x78, 0xc4, 0x0c) #/< Bw = 125 kHz, Cr = 4/8, Sf = 4096chips/symbol, low data rate, CRC on. Slow+long range
-    Bw125Cr45Sf2048 = (0x72, 0xb4, 0x04) #< Bw = 125 kHz, Cr = 4/5, Sf = 2048chips/symbol, CRC on. Slow+long range
+    BW500_CR5_SF7   = (0x92, 0x74, 0x0c)    # Bw =   500 kHz, CR = 4/5, SF =  7 =  128 chips/symbol, CRC on, fast,      short range
+    BW125_CR5_SF7   = (0x72, 0x74, 0x0c)    # Bw =   125 kHz, CR = 4/5, SF =  7 =  128 chips/symbol, CRC on, normal,    mid   range
+    BW125_CR5_SF11  = (0x72, 0xb4, 0x0c)    # Bw =   125 kHz, CR = 4/5, SF = 11 = 2048 chips/symbol, CRC on, slow,      long  range
+    BW125_CR5_SF12  = (0x72, 0xc4, 0x0c)    # Bw =   125 kHz, CR = 4/5, SF = 12 = 4096 chips/symbol, CRC on, very slow, long  range > DEFAULT
+    BW125_CR8_SF12  = (0x78, 0xc4, 0x0c)    # Bw =   125 kHz, CR = 4/8, SF = 12 = 4096 chips/symbol, CRC on, very slow, long  range
+    BW31_25_CR8_SF9 = (0x48, 0x94, 0x0c)    # Bw = 31.25 kHz, CR = 4/8, SF =  9 =  512 chips/symbol, CRC on, slow,      long  range
 
 class SPIConfig():
     # spi pin defs for various boards (channel, sck, mosi, miso)
-    rp2_0 = (0, 6, 7, 4)
-    rp2_1 = (1, 10, 11, 8)
-    esp8286_1 = (1, 14, 13, 12)
+    heltec  = (1, 5, 27, 19)
     esp32_1 = (1, 14, 13, 12)
     esp32_2 = (2, 18, 23, 19)
+    esp8286 = (1, 14, 13, 12)
+    rp2_0   = (0, 6, 7, 4)
+    rp2_1   = (1, 10, 11, 8)
 
 class LoRa(object):
-    def __init__(self, spi_channel, interrupt, this_address, cs_pin, reset_pin=None, freq=868.0, tx_power=14,
-                 modem_config=ModemConfig.Bw125Cr45Sf128, receive_all=False, acks=False, crypto=None):
+    def __init__(self, spi_channel, interrupt, this_address, cs_pin, reset_pin=None, freq=433.775, tx_power=20,
+                 modem_config=ModemConfig.BW125_CR5_SF12, receive_all=False, acks=False, crypto=None):
         """
-        Lora(channel, interrupt, this_address, cs_pin, reset_pin=None, freq=868.0, tx_power=14,
-                 modem_config=ModemConfig.Bw125Cr45Sf128, receive_all=False, acks=False, crypto=None)
-        channel: SPI channel, check SPIConfig for preconfigured names
-        interrupt: GPIO interrupt pin
+        Lora(channel, interrupt, this_address, cs_pin, reset_pin=None, freq=433.775, tx_power=20,
+             modem_config=ModemConfig.Bw125Cr45Sf128, receive_all=False, acks=False, crypto=None)
+        channel:      SPI channel, check SPIConfig for preconfigured names
+        interrupt:    GPIO interrupt pin
         this_address: set address for this device [0-254]
-        cs_pin: chip select pin from microcontroller 
-        reset_pin: the GPIO used to reset the RFM9x if connected
-        freq: frequency in MHz
-        tx_power: transmit power in dBm
+        cs_pin:       chip select pin from microcontroller 
+        reset_pin:    the GPIO used to reset the RFM9x if connected
+        freq:         frequency in MHz
+        tx_power:     transmit power in dBm
         modem_config: Check ModemConfig. Default is compatible with the Radiohead library
-        receive_all: if True, don't filter packets on address
-        acks: if True, request acknowledgments
-        crypto: if desired, an instance of ucrypto AES (https://docs.pycom.io/firmwareapi/micropython/ucrypto/) - not tested
+        receive_all:  if True, don't filter packets on address
+        acks:         if True, request acknowledgments
+        crypto:       if desired, an instance of ucrypto AES (https://docs.pycom.io/firmwareapi/micropython/ucrypto/) - not tested
         """
         
         self._spi_channel = spi_channel
@@ -144,7 +146,7 @@ class LoRa(object):
         
         self.set_mode_idle()
 
-        # set modem config (Bw125Cr45Sf128)
+        # set modem config
         self._spi_write(REG_1D_MODEM_CONFIG1, self._modem_config[0])
         self._spi_write(REG_1E_MODEM_CONFIG2, self._modem_config[1])
         self._spi_write(REG_26_MODEM_CONFIG3, self._modem_config[2])
@@ -173,7 +175,7 @@ class LoRa(object):
 
         self._spi_write(REG_09_PA_CONFIG, PA_SELECT | (self._tx_power - 5))
         
-    def on_recv(self, message):
+    def on_recv(self, data):
         # This should be overridden by the user
         pass
 
@@ -268,7 +270,7 @@ class LoRa(object):
             self.send(data, header_to, header_id=self._last_header_id, header_flags=header_flags)
             self.set_mode_rx()
 
-            if header_to == BROADCAST_ADDRESS:  # Don't wait for acks from a broadcast message
+            if header_to == BROADCAST_ADDRESS:  # Don't wait for acks from a broadcast frame.
                 return True
 
             start = time.time()
@@ -306,15 +308,15 @@ class LoRa(object):
         self.cs.value(1)
         return data
         
-    def _decrypt(self, message):
-        decrypted_msg = self.crypto.decrypt(message)
+    def _decrypt(self, data):
+        decrypted_msg = self.crypto.decrypt(data)
         msg_length = decrypted_msg[0]
         return decrypted_msg[1:msg_length + 1]
 
-    def _encrypt(self, message):
-        msg_length = len(message)
+    def _encrypt(self, data):
+        msg_length = len(data)
         padding = bytes(((math.ceil((msg_length + 1) / 16) * 16) - (msg_length + 1)) * [0])
-        msg_bytes = bytes([msg_length]) + message + padding
+        msg_bytes = bytes([msg_length]) + data + padding
         encrypted_msg = self.crypto.encrypt(msg_bytes)
         return encrypted_msg
 
@@ -346,13 +348,13 @@ class LoRa(object):
                 header_from = packet[1]
                 header_id = packet[2]
                 header_flags = packet[3]
-                message = bytes(packet[4:]) if packet_len > 4 else b''
+                data = bytes(packet) if packet_len > 4 else b''
 
                 if (self._this_address != header_to) and ((header_to != BROADCAST_ADDRESS) or (self._receive_all is False)):
                     return
 
-                if self.crypto and len(message) % 16 == 0:
-                    message = self._decrypt(message)
+                if self.crypto and len(data) % 16 == 0:
+                    data = self._decrypt(data)
 
                 if self._acks and header_to == self._this_address and not header_flags & FLAGS_ACK:
                     self.send_ack(header_from, header_id)
@@ -361,11 +363,11 @@ class LoRa(object):
 
                 self._last_payload = namedtuple(
                     "Payload",
-                    ['message', 'header_to', 'header_from', 'header_id', 'header_flags', 'rssi', 'snr']
-                )(message, header_to, header_from, header_id, header_flags, rssi, snr)
+                    ['data', 'header_to', 'header_from', 'header_id', 'header_flags', 'rssi', 'snr', 'length']
+                )(data, header_to, header_from, header_id, header_flags, rssi, snr, packet_len)
 
-                if not header_flags & FLAGS_ACK:
-                    self.on_recv(self._last_payload)
+                #if not header_flags & FLAGS_ACK:
+                self.on_recv(self._last_payload)
 
         elif self._mode == MODE_TX and (irq_flags & TX_DONE):
             self.set_mode_idle()
