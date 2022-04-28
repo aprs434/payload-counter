@@ -1,9 +1,13 @@
-# u-lora
+# LoRa Payload Counter
 
-This is a port of raspi-lora (https://pypi.org/project/raspi-lora/) for micropython.  I have tested on raspberry pi pico, esp8266, and esp32.  It allows your microcontroller to use an RFM95 radio to communicate.
+> ⚠ NOT FUNCTIONAL YET; CURRENTLY UNDER DEVELOPMENT
+
+This LoRa payload counter is based off [micropython](https://micropython.org/) and the [u‑lora](https://github.com/martynwheeler/u-lora) library by Martyn Wheeler. It is intended to work with the ESP32, ESP8266 and Raspberry Pi Pico microcontrollers.
+
+Payload counts are those as being reported by the LoRa chip.
+
 
 ## Wiring
-
 The pinout for the RFM95 module can be found on page 10 of the documentation (https://cdn.sparkfun.com/assets/learn_tutorials/8/0/4/RFM95_96_97_98W.pdf).  The pin numbers below are for the RFM95 - look at your microcontroller docs for the pins to connect to them.
 
 Power (the RFM95 module requires 3.3V from your microcontroller):  
@@ -21,7 +25,7 @@ Other pins:
 + Use a GPIO input to pin 14 (D) to trigger that a message has been received  
 
 ## Configuration
-**INITIALIZATION**
+**INITIALISATION**
 ```
 LoRa(spi_channel, interrupt, this_address, cs_pin, reset_pin=None, freq=868, tx_power=14,
     modem_config=ModemConfig.Bw125Cr45Sf128, acks=False, crypto=None)
@@ -65,8 +69,7 @@ Preconfigured modem settings taken from Radiohead docs, I will try and add the a
 There are two examples to test sending and receiving data in the examples folder
 
 ### Server mode:
-
-Copy the file server.py to your main.py and copy it across together with the library ulora.py to your microcontroller
+Copy the file `server.py` to `main.py` and copy it across together with the library `ulora.py` to the microcontroller.
 
 ```
 from time import sleep
@@ -104,7 +107,7 @@ while True:
 ```
 
 ### Client mode:
-Copy the file server.py to your main.py and copy it across together with the library ulora.py to your microcontroller
+Copy the file `server.py` to `main.py` and copy it across together with the library `ulora.py` to the microcontroller.
 
 ```
 from time import sleep
