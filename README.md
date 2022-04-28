@@ -22,7 +22,7 @@ Here is the official [`pyboard.py` documentation](https://docs.micropython.org/e
 
 
 ## Installing the Payload Counter Firmware
-From within the cloned repository folder, copy the firmware scripts `main.py` and `ulora.py` to the device flash drive, called `:`.
+From within the cloned repository folder, copy the firmware scripts `main.py` and `ulora.py` to the device flash drive, called `:`
 
 ```bash
 $ pyboard.py --device /dev/ttyUSB2 -f cp main.py ulora.py :
