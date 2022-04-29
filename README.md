@@ -9,21 +9,21 @@ Payload counts are those as being reported by the LoRa chip.
 - The LoRa sync word is currently fixed to the default LoRaWAN value of `0x34`.
 
 
-## Installing `esptool.py` and `rshell`
+## 1. Installing `esptool.py` and `rshell`
 ```bash
 $ pip install esptool rshell
 ```
 
-## Installing Micropython
+## 2. Installing Micropython
 - For ESP32, please, [follow these instructions](https://micropython.org/download/esp32/).
 
 
-## Using `pyboard.py`
+## 3. Using `pyboard.py`
 The `pyboard.py` utility comes preinstalled with this repository.
 Here is the official [`pyboard.py` documentation](https://docs.micropython.org/en/latest/reference/pyboard.py.html).
 
 
-## Installing the Firmware Scripts
+## 4. Installing the Firmware Scripts
 From within the cloned repository folder, copy the firmware scripts `main.py` and `ulora.py` to the device flash drive, called `:`
 
 ```bash
@@ -31,7 +31,7 @@ $ pyboard.py --device /dev/ttyUSB2 -f cp main.py ulora.py :
 ```
 
 
-## Using `rshell` to Access the Micropython REPL
+## 5. Using `rshell` to Access the Micropython REPL
 A device running Micropython has a shell environment, called [the read–eval–print loop (REPL)](https://en.wikipedia.org/wiki/Read–eval–print_loop).
 It can be accessed by running the `rshell` tool.
 ```bash
