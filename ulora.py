@@ -322,10 +322,11 @@ class LoRa(object):
 
     def _handle_interrupt(self, channel):
         irq_flags = self._spi_read(REG_12_IRQ_FLAGS)
-        print('A LoRa packet wwas received.')
+        print('A LoRa packet was received.')
 
         if self._mode == MODE_RXCONTINUOUS and (irq_flags & RX_DONE):
             packet_len = self._spi_read(REG_13_RX_NB_BYTES)
+            print(packet_len)
             self._spi_write(REG_0D_FIFO_ADDR_PTR, self._spi_read(REG_10_FIFO_RX_CURRENT_ADDR))
 
             packet = self._spi_read(REG_00_FIFO, packet_len)
