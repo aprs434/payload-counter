@@ -29,6 +29,7 @@ From within the cloned repository folder, copy the firmware scripts `main.py` an
 ```bash
 $ pyboard.py --device /dev/ttyUSB2 -f cp main.py ulora.py :
 ```
+The correct device port was derived from the `dmesg` device messages on Linux.
 
 
 ## 5. Using `rshell` to Access the Micropython REPL
